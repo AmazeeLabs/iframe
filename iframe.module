@@ -408,11 +408,8 @@ function iframe_iframe($text, $path, $options = FALSE) {
   }
   $options_link = array(); $options_link['attributes'] = array();
   $options_link['attributes']['title'] = $options['title'];
-  unset($options['url']);
   return (empty($text)? '' : '<div class="iframe_title">' . ($options['html'] ? $text : check_plain($text)) . '</div>') .
-  '<iframe src="' . check_url(url($path, $options)) . '"' . drupal_attributes($options) .
-  $htmlid .
-  '>' .
+  '<iframe src="' . check_url(url($path, $options)) . '" style="border:none; background:transparent; overflow:hidden; width:' . $options['height'] .';" height="' . $options['height'] .'"" ' . $htmlid . '>' .
   t('Your browser does not support iframes. But You can use the following link.') . ' ' . l('Link', url($path, $options), $options_link) . '</iframe>';
 }
 
