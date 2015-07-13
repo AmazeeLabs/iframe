@@ -59,22 +59,22 @@ function iframe_field_info() {
       'settings' => array(
         #'title' => '',
         #'url' => '',
-	#'width' => '',
-	#'height' => '',
-	'class' => 'field-iframe', /* class-name is the only attribute, which we use additive */
-	'frameborder' => 0, /* "0" or "yes" */
-	'scrolling' => 'auto',
-	'transparency' => 0,
+        #'width' => '',
+        #'height' => '',
+        'class' => 'field-iframe', /* class-name is the only attribute, which we use additive */
+        'frameborder' => 0, /* "0" or "yes" */
+        'scrolling' => 'auto',
+        'transparency' => 0,
       ),
       'instance_settings' => array(
         #'title' => '',
         #'url' => '',
-	'width' => '100%',
-	'height' => '800',
-	'class' => 'field-iframe-instance',
-	#'frameborder' => 0, /* "0" or "yes" */
-	#'scrolling' => 'auto',
-	#'transparency' => 0,
+        'width' => '100%',
+        'height' => '800',
+        'class' => 'field-iframe-instance',
+        #'frameborder' => 0, /* "0" or "yes" */
+        #'scrolling' => 'auto',
+        #'transparency' => 0,
       ),
       'default_widget' => 'iframe_widget_url',
       'default_formatter' => 'iframe_formatter_default',
@@ -196,18 +196,18 @@ function iframe_field_instance_settings_form($field, $instance) {
 function iframe_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
   foreach ($items as $delta => $item) {
     if (isset($item['url']) && !empty($item['url'])) {
-	    if (isset($item['width']) && (empty($item['width']) || (int)$item['width']<1)) {
-		    $errors[$field['field_name']][$langcode][$delta][] = array(
-				    'error' => '_iframe_widthsize_invalid',
-				    'message' => t('%name: the value of width may be no less than 1.', array('%name' => t($instance['label']))),
-				    );
-	    }
-	    if (isset($item['height']) && (empty($item['height']) || $item['height']<1)) {
-		    $errors[$field['field_name']][$langcode][$delta][] = array(
-				    'error' => '_iframe_heightsize_invalid',
-				    'message' => t('%name: the value of height may be no less than 1.', array('%name' => t($instance['label']))),
-				    );
-	    }
+      if (isset($item['width']) && (empty($item['width']) || (int)$item['width']<1)) {
+        $errors[$field['field_name']][$langcode][$delta][] = array(
+          'error' => '_iframe_widthsize_invalid',
+          'message' => t('%name: the value of width may be no less than 1.', array('%name' => t($instance['label']))),
+        );
+      }
+      if (isset($item['height']) && (empty($item['height']) || $item['height']<1)) {
+        $errors[$field['field_name']][$langcode][$delta][] = array(
+          'error' => '_iframe_heightsize_invalid',
+          'message' => t('%name: the value of height may be no less than 1.', array('%name' => t($instance['label']))),
+        );
+      }
     }
   }
   #drupal_set_message("<pre>".htmlspecialchars(print_r($errors, TRUE))."</pre>", 'error');
@@ -283,24 +283,24 @@ function iframe_field_formatter_view($object_type, $object, $field, $instance, $
   $element = array();
 
   if ($display['type']=='iframe_formatter_default') {
-      foreach ($items as $delta => $item) {
-        $element[$delta]['#markup'] = '<p>' . iframe_formatter_default_helper($item, $delta) . '</p>';
-      }
+    foreach ($items as $delta => $item) {
+      $element[$delta]['#markup'] = '<p>' . iframe_formatter_default_helper($item, $delta) . '</p>';
+    }
   }
   elseif ($display['type']=='iframe_formatter_only') {
-      foreach ($items as $delta => $item) {
-        $element[$delta]['#markup'] = '<p>' . iframe_formatter_only_helper($item, $delta) . '</p>';
-      }
+    foreach ($items as $delta => $item) {
+      $element[$delta]['#markup'] = '<p>' . iframe_formatter_only_helper($item, $delta) . '</p>';
+    }
   }
   elseif ($display['type']=='iframe_formatter_asurl') {
-      foreach ($items as $delta => $item) {
-        $element[$delta]['#markup'] = '<p>' . iframe_formatter_asurl_helper($item, $delta) . '</p>';
-      }
+    foreach ($items as $delta => $item) {
+      $element[$delta]['#markup'] = '<p>' . iframe_formatter_asurl_helper($item, $delta) . '</p>';
+    }
   }
   elseif ($display['type']=='iframe_formatter_asurlwithuri') {
-      foreach ($items as $delta => $item) {
-        $element[$delta]['#markup'] = '<p>' . iframe_formatter_asurlwithuri_helper($item, $delta) . '</p>';
-      }
+    foreach ($items as $delta => $item) {
+      $element[$delta]['#markup'] = '<p>' . iframe_formatter_asurlwithuri_helper($item, $delta) . '</p>';
+    }
   }
   return $element;
 }
@@ -376,9 +376,9 @@ function iframe_iframe($text, $path, $options = FALSE) {
   if (!isset($options['height'])) {
     $options['height'] = '701';
   }
-  if (!isset($options['frameborder']) || $options['frameborder'] < 0) {
-    $options['frameborder'] = 0;
-  }
+  //if (!isset($options['frameborder']) || $options['frameborder'] < 0) {
+  //  $options['frameborder'] = 0;
+  //}
   if (!isset($options['scrolling']) || empty($options['scrolling'])) {
     $options['scrolling'] = 'auto';
   }
@@ -408,12 +408,12 @@ function iframe_iframe($text, $path, $options = FALSE) {
   }
   $options_link = array(); $options_link['attributes'] = array();
   $options_link['attributes']['title'] = $options['title'];
-
+  unset($options['url']);
   return (empty($text)? '' : '<div class="iframe_title">' . ($options['html'] ? $text : check_plain($text)) . '</div>') .
-    '<iframe src="' . check_url(url($path, $options)) . '"' . drupal_attributes($options) .
-    $htmlid .
-    '>' .
-    t('Your browser does not support iframes. But You can use the following link.') . ' ' . l('Link', url($path, $options), $options_link) . '</iframe>';
+  '<iframe src="' . check_url(url($path, $options)) . '"' . drupal_attributes($options) .
+  $htmlid .
+  '>' .
+  t('Your browser does not support iframes. But You can use the following link.') . ' ' . l('Link', url($path, $options), $options_link) . '</iframe>';
 }
 
 /**************************************************************************
@@ -428,23 +428,23 @@ function iframe_iframe($text, $path, $options = FALSE) {
 function iframe_field_widget_info() {
   return array(
     'iframe_widget_url' => array(
-	  'label' => t('URL only'),
-	  'field types' => array('iframe'),
-          'settings' => array('size' => 255),
-          'weight' => 1,
-	),
+      'label' => t('URL only'),
+      'field types' => array('iframe'),
+      'settings' => array('size' => 255),
+      'weight' => 1,
+    ),
     'iframe_widget_urlheight' => array(
-	  'label' => t('URL with height'),
-	  'field types' => array('iframe'),
-          'settings' => array('size' => 255),
-          'weight' => 2,
-	),
+      'label' => t('URL with height'),
+      'field types' => array('iframe'),
+      'settings' => array('size' => 255),
+      'weight' => 2,
+    ),
     'iframe_widget_urlwidthheight' => array(
-	  'label' => t('URL with width and height'),
-	  'field types' => array('iframe'),
-          'settings' => array('size' => 255),
-          'weight' => 3,
-	),
+      'label' => t('URL with width and height'),
+      'field types' => array('iframe'),
+      'settings' => array('size' => 255),
+      'weight' => 3,
+    ),
   );
 }
 
@@ -457,15 +457,15 @@ function iframe_DISABLED_field_widget_settings_form($field, $instance) {
 
   #drupal_set_message("<pre>" . htmlspecialchars(print_r(array('function' => 'iframe_field_widget_settings_form', $instance), TRUE)) . "</pre>", 'error');
   $form = array();
-/*
-    $form['field_widget_settings_form'] = array(
-      '#type' => 'textfield',
-      '#title' => t('field_widget_settings_form'),
-      '#default_value' => $settings['width'],
-      '#required' => TRUE,
-      //'#element_validate' => array('element_validate_integer_positive'),
-    );
-*/
+  /*
+      $form['field_widget_settings_form'] = array(
+        '#type' => 'textfield',
+        '#title' => t('field_widget_settings_form'),
+        '#default_value' => $settings['width'],
+        '#required' => TRUE,
+        //'#element_validate' => array('element_validate_integer_positive'),
+      );
+  */
 
   return $form;
 }
@@ -502,11 +502,11 @@ function iframe_field_widget_form(&$form, &$form_state, $field, $instance, $lang
   switch ($instance['widget']['type']) {
     case 'iframe_widget_urlwidthheight':
       $fwidth = (isset($items['delta']) && isset($items[$delta]['width']))
-          ? $items[$delta]['width']
-          : (!empty($settings['width'])
-              ? $settings['width']
-              : NULL
-          );
+        ? $items[$delta]['width']
+        : (!empty($settings['width'])
+          ? $settings['width']
+          : NULL
+        );
       $element['width'] = array(
         '#type' => 'textfield',
         '#title' => t('width'),
@@ -515,15 +515,15 @@ function iframe_field_widget_form(&$form, &$form_state, $field, $instance, $lang
         '#weight' => 2,
         '#delta' => $delta,
       );
-      // no "break" intentionally, fall through
+    // no "break" intentionally, fall through
 
     case 'iframe_widget_urlheight':
       $fheight = (isset($items[$delta]) && isset($items[$delta]['height']))
-          ? $items[$delta]['height']
-          : (!empty($settings['height'])
-              ? $settings['height']
-              : NULL
-          );
+        ? $items[$delta]['height']
+        : (!empty($settings['height'])
+          ? $settings['height']
+          : NULL
+        );
       $element['height'] = array(
         '#type' => 'textfield',
         '#title' => t('height'),
@@ -531,15 +531,15 @@ function iframe_field_widget_form(&$form, &$form_state, $field, $instance, $lang
         '#size' => 4,
         '#weight' => 3,
         '#delta' => $delta,
-      	'#element_validate' => array('element_validate_integer_positive'),
+        '#element_validate' => array('element_validate_integer_positive'),
       );
-      // no "break" intentionally, fall through
+    // no "break" intentionally, fall through
 
     case 'iframe_widget_urlonly':
     default:
       $furl = (isset($items[$delta]) && isset($items[$delta]['url']))
-          ? $items[$delta]['url']
-          : NULL;
+        ? $items[$delta]['url']
+        : NULL;
       $element['url'] = array(
         '#type' => 'textfield',
         '#title' => t('IFrame URL'),
@@ -548,12 +548,12 @@ function iframe_field_widget_form(&$form, &$form_state, $field, $instance, $lang
         '#size' => 80,
         '#weight' => 1,
         '#delta' => $delta,
-      	'#element_validate' => array('iframe_validate_url'),
+        '#element_validate' => array('iframe_validate_url'),
       );
 
       $fclass = (isset($items[$delta]) && isset($items[$delta]['class']))
-          ? $items[$delta]['class']
-          : NULL;
+        ? $items[$delta]['class']
+        : NULL;
       $element['class'] = array(
         '#type' => 'textfield',
         '#title' => t('Additional CSS Class'),
@@ -578,10 +578,10 @@ function iframe_DISABLED_field_widget_error($element, $error) {
   switch ($error['error']) {
     case 'widthsize':
       form_error($element['width'], $error['message']);
-	  break;
+      break;
     case 'heightsize':
       form_error($element['height'], $error['message']);
-	  break;
+      break;
   }
 }
 
