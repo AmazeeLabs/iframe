@@ -452,15 +452,6 @@ function iframe_iframe($text, $path, $options = FALSE) {
   if (!isset($options['height'])) {
     $options['height'] = '701';
   }
-  if (!isset($options['frameborder']) || $options['frameborder'] < 0) {
-    $options['frameborder'] = 0;
-  }
-  if (!isset($options['scrolling']) || empty($options['scrolling'])) {
-    $options['scrolling'] = 'auto';
-  }
-  if (!isset($options['transparency']) || $options['transparency'] < 0) {
-    $options['transparency'] = 0;
-  }
   if (!isset($options['tokensupport']) || $options['tokensupport'] < 0) {
     $options['tokensupport'] = 0;
   }
@@ -500,6 +491,15 @@ function iframe_iframe($text, $path, $options = FALSE) {
     if ($tokensupport > 1) {
       $path = token_replace($path, array('user' => $user, 'node' => $node), array('language' => $language));
     }
+  }
+
+  // Unset older attributes that are no longer required and considered bad-practice for SEO
+  unset($options['frameborder'], $options['scrolling'], $options['transparency'], $options['url']);
+  if (isset($options['html']) && empty($options['html'])) {
+    unset($options['html']);
+  }
+  if (isset($options['tokensupport']) && empty($options['tokensupport'])) {
+    unset($options['tokensupport']);
   }
 
   return 
